@@ -210,8 +210,8 @@ elif [ -n "${CODESPACES}" ]; then
   # [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
   # source ~/.fzf/shell/completion.zsh
   # source ~/.fzf/shell/key-bindings.zsh
-  source ~/.bash_aliases
-  source "$WORKSPACE/venv/bin/activate"
+  # source ~/.bash_aliases
+  # source "$WORKSPACE/venv/bin/activate"
 fi
 
 # Helpful alias
