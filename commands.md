@@ -61,3 +61,9 @@ git push -u origin main
 ## 6. Add dotfiles repository to codespace configuration
 
 Settings -> Codespaces -> Auto install dotfiles
+
+## 7. Install Neovim config
+
+`
+npx degit nelsonfleig/dotfiles/dot_config/nvim-rover dot_config/nvim
+`

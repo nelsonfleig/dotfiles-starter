@@ -138,21 +138,6 @@ if [[ -d "$HOME/.pyenv" ]]; then
 	eval "$(pyenv init -)"
 fi
 
-# pnpm
-export PNPM_HOME="/Users/nelsonfleig/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-# bun completions
-[ -s "/Users/nelsonfleig/.bun/_bun" ] && source "/Users/nelsonfleig/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
 # Python3
 # alias python="python3"
 # alias pip="pip3"
@@ -176,20 +161,11 @@ export AWS_DEFAULT_PROFILE=prod
 alias v='NVIM_APPNAME=nvim-nelson nvim' # My current config
 alias vr='NVIM_APPNAME=nvim-rover nvim' # WIP - minimal neovim configuration for development at rover
 
-# Here for trying out other's configs. These may not all be included in my dotfiles
-alias vl='NVIM_APPNAME=nvim-lazy nvim' # LazyVim
-alias vk='NVIM_APPNAME=nvim-kickstart nvim' # Kickstart 
-alias vm='NVIM_APPNAME=nvim-kickstart-modular nvim' # Kickstart Modular
-alias vd='NVIM_APPNAME=nvim-devaslife nvim' # Config following Devaslife's setup from 11/23 on YT
-
 # MacOS specific
 if [[ "$(uname)" == "Darwin" ]]; then
-#  alias ls='colorls -l --sd'
-  # Set up fzf key bindings and fuzzy completion
   source <(fzf --zsh)
 
   # java
-  # export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
   export JAVA_HOME="/Library/Java/JavaVirtualMachines/amazon-corretto-17.jdk/Contents/Home" # Installed along with Android Studio
 
   # rbenv initialization
@@ -200,27 +176,19 @@ if [[ "$(uname)" == "Darwin" ]]; then
   fi
 
   alias t='tmux'
-  alias ld=lazydocker
 elif [ -n "${CODESPACES}" ]; then
   # Local tmux is unable to set TERM in the CS shell so we do it manually
   export TERM=tmux-256color
   export WORKSPACE=${WORKSPACE:-'/workspaces/web'}
-  # export SHELL=/bin/zsh
   export _ZO_DOCTOR=0
-  # [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-  # source ~/.fzf/shell/completion.zsh
-  # source ~/.fzf/shell/key-bindings.zsh
-  # source ~/.bash_aliases
-  # source "$WORKSPACE/venv/bin/activate"
+  source ~/.bash_aliases
+  source "$WORKSPACE/venv/bin/activate"
 fi
 
 # Helpful alias
-alias lg=lazygit
-alias gc='gcmsg'
-alias csdot='gh codespace create -R roverdotcom/web --status -d dotfiles-nelson'
-# alias csnew='gh codespace create -R roverdotcom/web --status -d'
 alias cspf='gh cs ports forward 8001:8001'
 alias sync='source ~/.zshrc'
+alias srcvenv='source .venv/bin/activate' # source venv in current directory
 
 # For use in roverdotcom repos
 create-staging() {
