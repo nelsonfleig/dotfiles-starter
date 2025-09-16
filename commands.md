@@ -48,7 +48,7 @@ chezmoi init
 
 ```
 chezmoi add $HOME/.zshrc
-chezmoi add $HOME/.p10k
+chezmoi add $HOME/.p10k.zsh
 ```
 
 ## 5. Add repo to chezmoi
