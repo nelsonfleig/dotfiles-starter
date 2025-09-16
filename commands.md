@@ -1,16 +1,9 @@
 # Codespaces and Dotfiles
 
-## Warm up questions
-
-- Who still uses the default mac terminal?
-- Who has tried customizing their terminal?
-- How many actively mantain their dotfiles?
-- How many use dotfiles in a codespace?
-
 ## 0. Backup your .zshrc
 
 `
-mv .zshrc .zshrc_bkp
+cd && mv .zshrc .zshrc_bkp
 `
 
 ## 1. Install OMZ
