@@ -2,8 +2,16 @@
 
 ## Warm up questions
 
+- Who still uses the default mac terminal?
+- Who has tried customizing their terminal?
 - How many actively mantain their dotfiles?
 - How many use dotfiles in a codespace?
+
+## 0. Backup your .zshrc
+
+`
+mv .zshrc .zshrc_bkp
+`
 
 ## 1. Install OMZ
 
@@ -54,16 +62,77 @@ chezmoi add $HOME/.p10k
 
 Create a public repository
 
+`chezmoi cd`
+
+```sh
 git remote add origin git@github.com:$GITHUB_USERNAME/dotfiles.git # replace with your own github username
 git branch -M main
 git push -u origin main
+```
 
-## 6. Add dotfiles repository to codespace configuration
+## 6. Add setup.sh script
+
+```sh
+#!/usr/bin/env bash
+
+# exit on error and print each command
+set -euxo pipefail
+
+# ~/.dotfiles ==> directory where this script is located
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+[[ -e ~/.dotfiles ]] || ln -s "$DIR" ~/.dotfiles
+
+# Install chezmoi
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin
+
+# Set default shell to zsh
+sudo chsh "$(id -un)" --shell "/usr/bin/zsh"
+
+# Reset and install OMZ
+if [ ! -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]; then
+    rm -rf $HOME/.oh-my-zsh
+    ZSH= sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+fi
+
+# Install Powerlevel10K
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
+# Apply Chezmoi 
+$HOME/.local/bin/chezmoi init --apply $GITHUB_USER/dotfiles # NOTE: update with repo name
+```
+
+## 7. Add dotfiles repository to codespace configuration
 
 Settings -> Codespaces -> Auto install dotfiles
 
-## 7. Install Neovim config
+## 8. Install Neovim config
 
 `
 npx degit nelsonfleig/dotfiles/dot_config/nvim-rover dot_config/nvim
 `
+
+## 9. Install a Neovim plugin
+
+`colorscheme.lua`
+
+```lua
+return {
+  { 
+    'folke/tokyonight.nvim',
+    priority = 1000, -- Make sure to load this before all the other start plugins.
+    opts = {
+      transparent = true,
+      styles = {
+        sidebars = 'transparent',
+        floats = 'transparent',
+      },
+    },
+    init = function()
+      -- Load the colorscheme here.
+      -- Like many other themes, this one has different styles, and you could load
+      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+      vim.cmd.colorscheme 'tokyonight-night'
+    end,
+  },
+}
+```
